@@ -39,11 +39,11 @@ borrow_id int primary key,
 user_id int,
 book_id int,
 borrow_date date not null,
-return_date date not null
+return_date date not null,
+constraint foreign key (user_id) references  users (userid) on delete cascade,
+constraint foreign key (book_id) references book (bookid) on delete cascade
 );
 insert into borrowings values (201,101,301,'2023-07-08','2023-07-09');
 select * from borrowings;
 alter table book add constraint foreign key (publisher_id) references publishers (publisher_id) on delete cascade;
 alter table book add constraint foreign key (category_id) references  categories (category_id) on delete cascade;
-alter table borrowings add constraint foreign key (user_id) references  users (userid) on delete cascade;
-alter table borrowings add constraint foreign key (book_id) references book (bookid) on delete cascade;
