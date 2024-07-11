@@ -1,5 +1,16 @@
 create database bookcatalog;
 use bookcatalog;
+
+create table categories (
+category_id int primary key,
+category_name varchar(30) unique not null
+);
+
+create table publishers (
+publisher_id int primary key,
+publisher_name varchar(30) not null
+);
+
 create table book(
 bookid int primary key,
 title varchar(20) not null,
@@ -7,43 +18,37 @@ ISBN varchar(10) unique not null,
 publication_year int not null,
 publisher_id int,
 category_id int,
-author_name varchar(30) check(author_name is not null)
+author_name varchar(30) check(author_name is not null),
+constraint foreign key (publisher_id) references publishers (publisher_id) on delete cascade,
+constraint foreign key (category_id) references  categories (category_id) on delete cascade
 );
-insert into book values (1,'mysql',120,2024,10,100,'john');
-select * from book;
-
-create table categories (
-category_id int primary key,
-category_name varchar(30) unique not null
-);
-insert into categories values (100,'abc');
-
-create table publishers (
-publisher_id int primary key,
-publisher_name varchar(30) not null
-);
-insert into publishers values (10,'manga');
 
 create table users (
 userid int primary key,
 user_name varchar(30) not null,
 email varchar(40) unique not null,
-phone_no int(25) unique not null
+phone_no varchar(25) unique not null
 );
-insert into users values (101,'hajime','hajime@gmail.com',8839457755);
-alter table users add phone_no varchar(20);
-select * from users;
 
 create table borrowings (
 borrow_id int primary key,
 user_id int,
-book_id int,
+bookid int,
 borrow_date date not null,
 return_date date not null,
 constraint foreign key (user_id) references  users (userid) on delete cascade,
-constraint foreign key (book_id) references book (bookid) on delete cascade
+constraint foreign key (bookid) references book (bookid) on delete cascade
 );
-insert into borrowings values (201,101,301,'2023-07-08','2023-07-09');
+
+insert into categories values (2,'anime');
+insert into publishers values (2,'Manga');
+insert into book  VALUES(2,'one piece','op301',1995,2,2,'eiichiro oda');
+insert into users values(102,'Marshal','mars@gmail.com','8855776634');
+insert into borrowings values(202,102,1,'2024-07-07','2024-07-10');
+
+select * from book;
+select * from categories;
+select * from publishers;
+select * from users;
 select * from borrowings;
-alter table book add constraint foreign key (publisher_id) references publishers (publisher_id) on delete cascade;
-alter table book add constraint foreign key (category_id) references  categories (category_id) on delete cascade;
+
