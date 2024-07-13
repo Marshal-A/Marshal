@@ -1,0 +1,27 @@
+SELECT
+    br.borrow_id,
+    br.borrow_date,
+    br.return_date,
+    u.userid,
+    u.user_name,
+    u.email,
+    u.phone_no,
+    b.bookid,
+    b.title,
+    b.ISBN,
+    b.publication_year,
+    b.author_name,
+    p.publisher_id,
+    p.publisher_name,
+    c.category_id,
+    c.category_name
+FROM
+    borrowings br
+JOIN
+    users u ON br.user_id = u.userid
+JOIN
+    book b ON br.bookid = b.bookid
+JOIN
+    publishers p ON b.publisher_id = p.publisher_id
+JOIN
+    categories c ON b.category_id = c.category_id;
