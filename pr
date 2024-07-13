@@ -1,0 +1,64 @@
+create database bookcatalog;
+use bookcatalog;
+create table categories (
+category_id int primary key,
+category_name varchar(30) unique not null
+);
+
+create table publishers (
+publisher_id int primary key,
+publisher_name varchar(30) not null
+);
+
+create table book(
+bookid int primary key,
+title varchar(20) not null,
+ISBN varchar(10) unique not null,
+publication_year int not null,
+publisher_id int,
+category_id int,
+author_name varchar(30) check(author_name is not null),
+constraint foreign key (publisher_id) references publishers (publisher_id) on delete cascade,
+constraint foreign key (category_id) references  categories (category_id) on delete cascade
+);
+
+create table users (
+userid int primary key,
+user_name varchar(30) not null,
+email varchar(40) unique not null,
+phone_no varchar(25) unique not null
+);
+
+create table borrowings (
+borrow_id int primary key,
+user_id int,
+bookid int,
+borrow_date date not null,
+return_date date not null,
+constraint foreign key (user_id) references  users (userid) on delete cascade,
+constraint foreign key (bookid) references book (bookid) on delete cascade
+);
+insert into categories values (2,'anime');
+insert into publishers values (2,'Manga');
+insert into book  VALUES(2,'one piece','op301',1995,2,2,'eiichiro oda');
+insert into users values(102,'Marshal','mars@gmail.com','8855776634');
+insert into borrowings values(202,102,1,'2024-07-07','2024-07-10'); insert into categories values(3,'self-help');
+insert into publishers values(3,'random house');
+insert into book value(3,'power of mind','pom3','1982',3,3,'joseph murphy');
+insert into users values(103,'josh','josh@gmail.com','8899445536');
+insert into borrowings values(203,103,3,"2024-06-01","2024-06-10");
+insert into categories values(4,'story'),(5,'sci-fi');
+insert into publishers values(4,'martel'),(5,'narxo');
+insert into book value(4,'The Leader','Msd4','2016',4,4,'Biswadeep ghosh'),(5,'The big bang Theory','bbt5',1918,5,5,'Albert');
+insert into users values(104,'ravi','ravi@gmail.com','8899445537'),(105,'Vijay','vijay@gmail.com','8844556622');
+insert into borrowings values(204,104,4,"2024-06-20","2024-06-25"),(205,105,5,'2024-05-14','2024-06-15');
+select book.bookid,book.title,book.ISBN,book.author_name,
+publishers.publisher_name,
+categories.category_name,
+users.user_name,users.email,users.phone_no,
+borrowings.borrow_id,borrowings.borrow_date,borrowings.return_date from book
+
+inner join publishers on book.publisher_id=publishers.publisher_id
+inner join categories on book.category_id=categories.category_id
+left join borrowings on book.bookid=borrowings.bookid
+left join users on borrowings.user_id=users.userid;
