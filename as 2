@@ -1,0 +1,199 @@
+If-else and Switch Statements in Java
+1. Write a program that takes a number from the user between 1 to 12 and displays the name of the 
+month.
+Input:
+3
+Output:
+March
+Input:
+ -2
+Output:
+Invalid Input
+Input:
+ 14
+Output:
+Invalid Input
+2. Write a program to display calculated result of two numbers based on the mathematical operator 
+entered.
+Input:
+8 3 +
+Output:
+11
+3. Write a Program to check the grade based on marks obtained by students.
+For Example:
+Percentage >= 60% : Grade A.
+Percentage >= 45% : Grade B.
+Percentage >= 35% : Grade C.
+Percentage < 35% : Fail.
+Input:
+77
+Output:
+A Grade 
+4. Write a program to add two complex numbers.
+Input:
+4 +i5
+10 +i5
+Output:
+14 +i10
+ Practice Exercise 
+ July 15, 2024 | 3
+5. Write a program to check if a given integer is Odd or Even.
+Input : 
+13
+Output: 
+ODD
+Input : 
+24
+Output: 
+EVEN
+6. Write a program to find the largest of three numbers.
+Input: 
+7 20 56
+Output: 
+56
+7. Write a program to find LCM of two numbers.
+Input:
+15 25
+Output
+LCM is 75
+8. Write a program to find GCD or HCF of two numbers.
+Input:
+10 20
+Output
+HCF is 10
+9. Write a program to find all the prime numbers from 1 to N.
+Input: 
+11
+Output: 
+2 3 5 7 11
+10. Write a program to find whether a given year is a Leap Year or not.
+Input:
+2012
+Output:
+Leap Year
+ Practice Exercise 
+ July 15, 2024 | 4
+11. Write a program to check whether a character is Vowel or Consonant.
+Input : 
+r
+Output : 
+Consonant
+Input :
+e
+Output : 
+Vowel
+12. Write a program to calculate simple interest.
+13. Write a program to calculate compound interest.
+14. Write a program to find the perimeter of a Rectangle.
+Input : 
+10 (length)
+20 (breadth)
+Output : 
+60
+ Practice Exercise 
+ July 15, 2024 | 5
+Iterating with Loops
+15. Write a program that prompts the user to input an integer and then outputs the number with the 
+digits reversed.
+Input:
+12345
+Output:
+54321
+16. Write a program to accept two numbers and find the power of each (Do not use Java built-in 
+method)
+Input:
+4 2
+Output
+16
+17. Write a program to check Armstrong number between two integers.
+Input: 
+100 200
+Output:
+153
+18. Write a program to check if a number is Neon Number or Not.
+(Note: A neon number is a number where the sum of digits of the square of the number 
+is equal to the number)
+Input : 
+9
+Output : 
+9 is Neon number
+Explanation : square of 9=9*9=81;
+ sum of digit of square : 8+1=9(which is equal to given number)
+19. Write a program to find the factorial of a given number.
+Input :
+5
+Output : 
+120
+20. Write a program to find the sum of Fibonacci Series numbers of first N even indexes.
+Input: 
+4
+Output: 
+33
+Explanation : N = 4, So here the fibonacci series will be produced from 0th term till 8th 
+term: 0, 1, 1, 2, 3, 5, 8, 13, 21
+Sum of numbers at even indexes = 0 + 1 + 3 + 8 + 21 = 33.
+ Practice Exercise 
+ July 15, 2024 | 6
+21. Write a program to print right triangle star pattern.
+Input :
+5
+Output: 
+* 
+* * 
+* * * 
+* * * * 
+* * * * *
+22. Write a program to print reverse pyramid star pattern.
+Input: 
+7
+Output:
+*************
+***********
+ *********
+ *******
+ *****
+ ***
+ *
+23. Write a program to print upper star triangle pattern.
+Input: 
+9
+Output
+ *
+ **
+ ***
+ ****
+ *****
+ ******
+ *******
+ ********
+*********
+**********
+ Practice Exercise 
+ July 15, 2024 | 7
+24. Write a program to print diamond shape star pattern.
+Input:
+7
+Output:
+ *
+ ***
+ *****
+ *******
+ *********
+ ***********
+*************
+ ***********
+ *********
+ *******
+ *****
+ ***
+ *
+25. Write a program to print square star pattern.
+Example:
+**********************
+* *
+* *
+* *
+* *
+* *
+* *
+**********************
