@@ -1,0 +1,146 @@
+package Task6;
+
+import java.util.Random;
+
+class Employee {
+    private String name;
+    private long[] phoneNo;
+    private String passportNo;
+    private String licenseNo;
+    private String panCardNo;
+    private String voterId;
+    private Integer employeeId;
+
+    public Employee(String name, long[] phoneNo, Integer employeeId, String passportNo) {
+        this.name = name;
+        this.phoneNo = phoneNo;
+        this.employeeId = employeeId;
+        this.passportNo = passportNo;
+    }
+
+    public Employee(String name, long[] phoneNo, Integer employeeId, String licenseNo, String voterId) {
+        this.name = name;
+        this.phoneNo = phoneNo;
+        this.employeeId = employeeId;
+        this.licenseNo = licenseNo;
+        this.voterId = voterId;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(name).append("\n");
+        sb.append("Phone No's: ");
+        for (long phone : phoneNo) {
+            sb.append(phone).append(", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append("\nEmployee Id: ").append(employeeId).append("\n");
+        if (passportNo != null) sb.append("Passport No: ").append(passportNo).append("\n");
+        if (licenseNo != null) sb.append("License No: ").append(licenseNo).append("\n");
+        if (panCardNo != null) sb.append("Pan No: ").append(panCardNo).append("\n");
+        if (voterId != null) sb.append("Voter Id: ").append(voterId).append("\n");
+        return sb.toString();
+    }
+}
+
+class Student {
+    private String name;
+    private long[] phoneNo;
+    private String passportNo;
+    private String licenseNo;
+    private String panCardNo;
+    private String voterId;
+
+    public Student(String name, long[] phoneNo, String passportNo) {
+        this.name = name;
+        this.phoneNo = phoneNo;
+        this.passportNo = passportNo;
+    }
+
+    public Student(String name, long[] phoneNo, String voterId, String licenseNo) {
+        this.name = name;
+        this.phoneNo = phoneNo;
+        this.voterId = voterId;
+        this.licenseNo = licenseNo;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(name).append("\n");
+        sb.append("Phone No's: ");
+        for (long phone : phoneNo) {
+            sb.append(phone).append(", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        if (passportNo != null) sb.append("\nPassport No: ").append(passportNo).append("\n");
+        if (licenseNo != null) sb.append("\nLicense No: ").append(licenseNo).append("\n");
+        if (panCardNo != null) sb.append("Pan No: ").append(panCardNo).append("\n");
+        if (voterId != null) sb.append("Voter Id: ").append(voterId).append("\n");
+        return sb.toString();
+    }
+}
+
+class Register<T> {
+    private String registerId;
+
+    public void generateRegisterId(int n) {
+        StringBuilder sb = new StringBuilder(n);
+        Random random = new Random();
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        for (int i = 0; i < n; i++) {
+            int index = random.nextInt(characters.length());
+            sb.append(characters.charAt(index));
+        }
+        this.registerId = sb.toString();
+    }
+
+    public void display(T user) {
+        System.out.println("Hurray!! You availed a discount of " + (user instanceof Student ? "22%" : "10%"));
+        System.out.println("Registered Id: " + this.registerId);
+        System.out.println(user.toString());
+    }
+}
+
+public class Prob3 {
+
+    public static void main(String[] args) {
+        long[] phoneNumbers1 = {141204227851L, 512021412021L};
+        Employee employee1 = new Employee("Marshal", phoneNumbers1, 1012, "KNDC202132");
+
+        long[] phoneNumbers2 = {20512021512L, 9502502202L};
+        Employee employee2 = new Employee("John", phoneNumbers2, 1001, "utb123", "SJLDD1761J");
+
+        long[] phoneNumbers3 = {5120212202L, 202102012L};
+        Employee employee3 = new Employee("Jack", phoneNumbers3, 1010, "2001", "211205");
+
+        long[] phoneNumbers4 = {2051202103L, 5102051020L};
+        Student student1 = new Student("Lufy", phoneNumbers4, "3001", "051w5w1wwf");
+
+        long[] phoneNumbers5 = {5102505448L, 2012021515L};
+        Student student2 = new Student("Krish", phoneNumbers5, "212021", "0255102");
+
+        Register<Employee> employeeRegister = new Register<>();
+        employeeRegister.generateRegisterId(7);
+        System.out.println("Details of the Employee:");
+        employeeRegister.display(employee1);
+
+        employeeRegister.generateRegisterId(7);
+        System.out.println("Details of the Employee:");
+        employeeRegister.display(employee2);
+
+        employeeRegister.generateRegisterId(7);
+        System.out.println("Details of the Employee:");
+        employeeRegister.display(employee3);
+
+        Register<Student> studentRegister = new Register<>();
+        studentRegister.generateRegisterId(7);
+        System.out.println("Details of the Student:");
+        studentRegister.display(student1);
+
+        studentRegister.generateRegisterId(7);
+        System.out.println("Details of the Student:");
+        studentRegister.display(student2);
+    }
+}
