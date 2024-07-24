@@ -1,0 +1,123 @@
+package Task6;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+public class Main {
+
+    private static ZonedDateTime appointment;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEE, MMM dd yyyy hh:mma");
+
+        while (true) {
+            System.out.println("1. Schedule an Appointment.");
+            System.out.println("2. Print Appointment Details.");
+            System.out.println("3. Reschedule an Appointment.");
+            System.out.println("4. Get Reminder.");
+            System.out.println("5. Cancel the Appointments.");
+            System.out.println("6. Exit.");
+            System.out.println("Enter an Option:");
+
+            int option = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character after nextInt()
+
+            switch (option) {
+                case 1:
+                    System.out.println("Enter Date (dd/MM/yyyy):");
+                    String dateInput = scanner.nextLine();
+                    LocalDate date = LocalDate.parse(dateInput, dateFormatter);
+
+                    System.out.println("Enter Time (HH:mm):");
+                    String timeInput = scanner.nextLine();
+                    LocalTime time = LocalTime.parse(timeInput, timeFormatter);
+
+                    System.out.println("Available Zones are:");
+                    System.out.println("A: America/Anchorage");
+                    System.out.println("B: Europe/Paris");
+                    System.out.println("C: Asia/Tokyo");
+                    System.out.println("D: America/Phoenix");
+                    System.out.println("Select the Zone (A/B/C/D):");
+
+                    String zoneOption = scanner.nextLine();
+                    ZoneId zone = getZoneId(zoneOption);
+
+                    appointment = ZonedDateTime.of(date, time, zone);
+                    System.out.println("Successfully Booked");
+                    break;
+
+                case 2:
+                    if (appointment != null) {
+                        System.out.println(appointment.format(dateTimeFormatter));
+                    } else {
+                        System.out.println("No appointment booked.");
+                    }
+                    break;
+
+                case 3:
+                    if (appointment != null) {
+                        System.out.println("Current Appointment Date is " + appointment.format(dateTimeFormatter));
+                        System.out.println("Kindly Enter Number of Days to be postponed:");
+                        int days = scanner.nextInt();
+                        scanner.nextLine(); // Consume the newline character after nextInt()
+                        System.out.println("Enter the new time in HH:mm:");
+                        String newTimeInput = scanner.nextLine();
+                        LocalTime newTime = LocalTime.parse(newTimeInput, timeFormatter);
+                        appointment = appointment.plusDays(days).with(newTime);
+                        System.out.println("Your Appointment has been rescheduled to: " + appointment.format(dateTimeFormatter));
+                    } else {
+                        System.out.println("No appointment to reschedule.");
+                    }
+                    break;
+
+                case 4:
+                    if (appointment != null) {
+                        ZonedDateTime reminderTime = appointment.minusDays(1);
+                        System.out.println("Reminder: Your appointment is on " + appointment.format(dateTimeFormatter) + ", you will be reminded on " + reminderTime.format(dateTimeFormatter));
+                    } else {
+                        System.out.println("No appointment booked.");
+                    }
+                    break;
+
+                case 5:
+                    if (appointment != null && appointment.isAfter(ZonedDateTime.now())) {
+                        appointment = null;
+                        System.out.println("Appointment has been cancelled!!");
+                    } else {
+                        System.out.println("No appointment to cancel or it's already past the appointment date.");
+                    }
+                    break;
+
+                case 6:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
+    private static ZoneId getZoneId(String zoneOption) {
+        switch (zoneOption.toUpperCase()) {
+            case "A":
+                return ZoneId.of("America/Anchorage");
+            case "B":
+                return ZoneId.of("Europe/Paris");
+            case "C":
+                return ZoneId.of("Asia/Tokyo");
+            case "D":
+                return ZoneId.of("America/Phoenix");
+            default:
+                throw new IllegalArgumentException("Invalid zone option");
+        }
+    }
+}
