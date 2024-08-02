@@ -1,0 +1,116 @@
+<%@ page import="java.sql.*" %>
+
+<%String a=request.getParameter("t1");
+String b=request.getParameter("t2");
+String c=request.getParameter("t3");
+String d=request.getParameter("t4");
+String h=request.getParameter("t5");
+String f=request.getParameter("b1");%>
+
+<%out.println("Empno is "+a);
+out.println("Name is "+b);
+out.println("Address is "+c);
+out.println("Mobile number is :"+d);
+out.println("Email id is :"+h);
+out.println("Button pressed is "+f);
+%>
+<%
+Connection con=null;
+try
+{
+	Class.forName("com.mysql.cj.jdbc.Driver");
+	 con=DriverManager.getConnection("jdbc:mysql://localhost:3306/practice","root","Password@12");
+}
+catch(Exception ae)
+{
+	ae.printStackTrace();
+}
+if(d.equals("insert"))
+{
+	PreparedStatement ps;
+	try {
+		ps = con.prepareStatement("insert into jspcexample values(?,?,?,?,?)");
+		ps.setInt(1,Integer.parseInt(a));
+		ps.setString(2,b);
+		ps.setString(3,c);
+		ps.setLong(4,Long.parseLong(d));
+		ps.setString(5, h);
+		ps.execute();
+		out.println("row inserted");
+	}
+	catch (SQLException e) 
+	{
+				e.printStackTrace();
+	}
+}
+		else if(d.equals("update"))
+	{
+			PreparedStatement ps;
+			try {
+				ps = con.prepareStatement("update jspcexample set name=?, address=?,mobile_number=?,Email_id=? where empno=?");
+				
+				ps.setString(1,b);
+				ps.setString(2,c);
+				ps.setInt(3,Integer.parseInt(a));
+				ps.setLong(4,Long.parseLong(d));
+				ps.setString(5, h);
+				ps.execute();
+				out.println("row updated");
+			}
+			catch (SQLException e) 
+			{
+						e.printStackTrace();
+			}
+	}
+	else if(d.equals("delete"))
+	{
+		PreparedStatement ps;
+		try {
+			ps = con.prepareStatement("delete from jspcexample where empno=?");
+			ps.setInt(1,Integer.parseInt(a));
+			ps.execute();
+			out.println("row deleted");
+		}
+		catch (SQLException e) 
+		{
+					e.printStackTrace();
+		}
+	}
+	else if(d.equals("select"))
+	{
+		Statement ps;
+		try {
+			ps = con.createStatement();
+			ResultSet rs=ps.executeQuery("select * from jspcexample");
+			out.println("<table border=1><tr><td><b>Empno<td><b>Name<td><b>Address<b>mobile_number<td><b>Email_id</tr>");
+		while(rs.next())
+		{
+			out.println("<tr><td>"+rs.getInt(1)+"<td>"+rs.getString(2)+"<td>"+rs.getString(3)+rs.getString(4)+"<td>"+rs.getString(5)+"</tr>");
+		}
+		out.println("</table>");
+		}
+		catch (SQLException e) 
+		{
+					e.printStackTrace();
+		}
+}
+	else
+	{
+		PreparedStatement ps;
+		try {
+			ps = con.prepareStatement("select * from jspcexample where empno=?");
+			ps.setInt(1,Integer.parseInt(a));
+			ResultSet rs=ps.executeQuery();
+			out.println("<table border=1><tr><td><b>Empno<td><b>Name<td><b>Address<td><b>mobile_number<td><b>Email_id</tr>");
+		while(rs.next())
+		{
+			out.println("<tr><td>"+rs.getInt(1)+"<td>"+rs.getString(2)+"<td>"+rs.getString(3)+rs.getString(4)+"<td>"+rs.getString(5)+"</tr>");
+		}
+		out.println("</table>");
+		}
+		catch (SQLException e) 
+		{
+					e.printStackTrace();
+		}
+	}
+%>
