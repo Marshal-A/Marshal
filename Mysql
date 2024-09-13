@@ -1,0 +1,39 @@
+-- Create the payroll_management database
+CREATE DATABASE payroll_management;
+
+-- Use the payroll_management database
+USE payroll_management;
+
+-- Employees Table
+CREATE TABLE employees (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    role VARCHAR(50) NOT NULL,  -- Can be 'admin' or 'employee'
+    category VARCHAR(50),  -- Can be 'developer', 'tester', or 'designer'
+    salary DECIMAL(10, 2),
+    password VARCHAR(60) NOT NULL,  -- Store hashed passwords
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Attendance Table
+CREATE TABLE attendance (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    employee_id BIGINT NOT NULL,
+    date DATE NOT NULL,
+    status ENUM('Present', 'Absent', 'Leave') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
+);
+
+-- Salary Table
+CREATE TABLE salary (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    employee_id BIGINT NOT NULL,
+    basic_salary DECIMAL(10, 2) NOT NULL,
+    deductions DECIMAL(10, 2) NOT NULL,
+    net_salary DECIMAL(10, 2) NOT NULL,
+    pay_date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
+);
