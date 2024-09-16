@@ -1,115 +1,75 @@
-package com.emp.payroll.model;
+package com.emp.payroll.controller;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-@Entity
-@Table(name = "schedule")
-public class Schedule {
-    @Id
-    private long empId;
+import java.util.HashMap;
+import java.util.Map;
 
-    @Column(name = "Date")
-    private String Date;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-    @Column(name = "Shift")
-    private String Shift;
+import com.emp.exception.ResourceNotFoundException;
+import com.emp.payroll.model.Schedule;
+import com.emp.payroll.repository.ScheduleRepository;
 
-    @Column(name = "startingTime")
-    private String startingTime;
+import org.springframework.web.bind.annotation.PutMapping;
 
-    @Column(name = "endTime")
-    private String endTime;
-
-    @Column(name = "Duration")
-    private String Duration;
-
-    // Define the time format (24-hour format)
-    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
-    // Default constructor
-    public Schedule() { }
-
-    // Constructor with parameters
-    public Schedule(String date, String shift, String startingTime, String endTime) {
-        this.Date = date;
-        this.Shift = shift;
-        this.startingTime = startingTime;
-        this.endTime = endTime;
-        calculateDuration();  // Automatically calculate duration
-    }
-
-    public long getEmpId() {
-        return empId;
-    }
-
-    public void setEmpId(long empId) {
-        this.empId = empId;
-    }
-
-    public String getDate() {
-        return Date;
-    }
-
-    public void setDate(String date) {
-        Date = date;
-    }
-
-    public String getShift() {
-        return Shift;
-    }
-
-    public void setShift(String shift) {
-        Shift = shift;
-    }
-
-    public String getStartingTime() {
-        return startingTime;
-    }
-
-    public void setStartingTime(String startingTime) {
-        this.startingTime = startingTime;
-        calculateDuration();  // Recalculate duration when start time is changed
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-        calculateDuration();  // Recalculate duration when end time is changed
-    }
-
-    public String getDuration() {
-        return Duration;
-    }
-
-    private void calculateDuration() {
-        if (this.startingTime != null && this.endTime != null) {
-            // Parse the starting and ending times
-            LocalTime start = LocalTime.parse(startingTime, timeFormatter);
-            LocalTime end = LocalTime.parse(endTime, timeFormatter);
-
-            // Calculate the duration between the times
-            Duration duration = Duration.between(start, end);
-
-            // Handle negative duration (for shifts that pass midnight)
-            if (duration.isNegative()) {
-                duration = duration.plusDays(1);
-            }
-
-            // Convert duration to hours and minutes
-            long hours = duration.toHours();
-            long minutes = duration.toMinutes() % 60;
-
-            // Set the Duration string in a readable format
-            this.Duration = hours + " hours " + minutes + " minutes";
-        }
-    }
+@CrossOrigin(origins ="http://localhost:4200/")
+@RestController
+@RequestMapping("/employeepayroll/schedule/")
+public class ScheduleController {
+	
+	@Autowired
+	private ScheduleRepository attendanceRepository;
+	
+	//get all Employees
+	@GetMapping("/schedules") 
+	public List<Schedule> getAllEmployees(){
+		return attendanceRepository.findAll();
+	}
+     @PostMapping("/schedules")
+	public Schedule createAttendance(@RequestBody Schedule attendance) {
+		return  attendanceRepository.save(attendance);
+		
+	}
+     
+     
+     @GetMapping("/schedules/{empId}")
+ 	public ResponseEntity<Schedule> getEmployeeById(@PathVariable Long empId) {
+ 		Schedule employee = attendanceRepository.findById(empId)
+ 				.orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + empId));
+ 		return ResponseEntity.ok(employee);
+ 	}
+ 	
+     @PutMapping("/schedules/{empId}")
+ 	public ResponseEntity<Schedule> updateEmployee(@PathVariable Long empId, @RequestBody Schedule employeeDetails){
+ 		Schedule employee = attendanceRepository.findById(empId)
+ 				.orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + empId));
+ 		
+ 		employee.setDate(employeeDetails.getDate());
+ 		employee.setShift(employeeDetails.getShift());
+ 		employee.setStartingTime(employeeDetails.getStartingTime());
+ 		employee.setEndTime(employeeDetails.getEndTime());
+ 		employee.setDuration(employeeDetails.getDuration());
+ 	
+ 		
+ 		Schedule updatedEmployee = attendanceRepository.save(employee);
+ 		return ResponseEntity.ok(updatedEmployee);
+     }
+     @DeleteMapping("/schedules/{empId}")
+ 	public String deleteEmployee(@PathVariable Long empId){
+ 		Schedule employee = attendanceRepository.findById(empId)
+ 				.orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + empId));
+ 		
+ 		attendanceRepository.delete(employee);
+ 		return "deleted";
+ 	}
 }
